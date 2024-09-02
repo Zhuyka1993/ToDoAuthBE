@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
 
 function AuthForm({ type, closeModal }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -24,11 +26,14 @@ function AuthForm({ type, closeModal }) {
 
       const result = await response.json();
       if (response.ok) {
-        // Якщо залогінився, то переход на основну сторінку
-        console.log('Success:', result);
+        // Показуємо popup та зберігаємо токен
         localStorage.setItem('token', result.token); // Збереження токена
-        closeModal(); // Закриває модальне вікно
-        navigate('/'); // Перенаправлення на головну сторінку
+        setShowPopup(result.name); // Встановлюємо ім'я користувача у стан
+        setTimeout(() => {
+          setShowPopup(false); // Прибираємо popup через 3 секунди
+          closeModal(); // Закриває модальне вікно
+          navigate('/'); // Перенаправлення на головну сторінку
+        }, 3000);
       } else {
         console.error('Error:', result.message);
       }
@@ -37,33 +42,46 @@ function AuthForm({ type, closeModal }) {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e); // Виклик handleSubmit при натисканні Enter
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      {type === 'register' && (
+    <>
+      {showPopup && (
+        <div className="popup">
+          Вітаю, {showPopup}!
+        </div>
+      )}
+      <form onSubmit={handleSubmit} onKeyPress={handleKeyPress}>
+        {type === 'register' && (
+          <input
+            type="text"
+            placeholder="Ім'я"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        )}
         <input
-          type="text"
-          placeholder="Ім'я"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
-      )}
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Пароль"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">{type === 'login' ? 'Увійти' : 'Зареєструватись'}</button>
-    </form>
+        <input
+          type="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">{type === 'login' ? 'Увійти' : 'Зареєструватись'}</button>
+      </form>
+    </>
   );
 }
 
