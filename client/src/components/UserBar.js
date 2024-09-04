@@ -1,9 +1,14 @@
 import React from 'react';
 
-function UserBar({ openModal }) {
+function UserBar({ openModal, isAuthenticated }) {
   return (
-    <div className="userbar userbar--user-outline-icon j-user-tabs" onClick={openModal}>
-      <span className="cabinet">Особистий кабінет</span>
+    <div>
+      {!isAuthenticated && (
+        <span className="cabinet" onClick={openModal} style={{ cursor: 'pointer', color: 'blue' }}>
+          Особистий кабінет
+        </span>
+      )}
+      {/* Інші елементи UserBar, якщо вони є */}
     </div>
   );
 }

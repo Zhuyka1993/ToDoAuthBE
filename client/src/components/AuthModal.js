@@ -1,22 +1,17 @@
 import React from 'react';
-import AuthForm from './AuthForm'; 
-import '../App.css';
+import AuthForm from './AuthForm';
+import '../App.css'; // Переконайтеся, що ваші стилі правильно імплементовані
 
-function AuthModal({ activeTab, setActiveTab, closeModal }) {
+function AuthModal({ activeTab, setActiveTab, closeModal, setIsAuthenticated }) {
   return (
-    <div className="modal">
+    <div className="modal open">
       <div className="modal-content">
-        <span className="close-button" onClick={closeModal}>&times;</span>
+        <button className="close-button" onClick={closeModal}>&times;</button> {/* Кнопка закриття */}
         <div className="auth-tabs">
-          <button className={activeTab === 'login' ? 'active' : ''} onClick={() => setActiveTab('login')}>Вхід</button>
-          <button className={activeTab === 'register' ? 'active' : ''} onClick={() => setActiveTab('register')}>Реєстрація</button>
+          <button onClick={() => setActiveTab('login')} className={activeTab === 'login' ? 'active' : ''}>Увійти</button>
+          <button onClick={() => setActiveTab('register')} className={activeTab === 'register' ? 'active' : ''}>Зареєструватись</button>
         </div>
-        {/* Відображаємо відповідний контент залежно від вибраного табу */}
-        {activeTab === 'login' ? (
-          <AuthForm type="login" closeModal={closeModal} />
-        ) : (
-          <AuthForm type="register"  closeModal={closeModal}  />
-        )}
+        <AuthForm type={activeTab} closeModal={closeModal} setIsAuthenticated={setIsAuthenticated} />
       </div>
     </div>
   );

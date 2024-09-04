@@ -1,66 +1,61 @@
-/* Стилі для модального вікна */
 .modal {
+  display: none; /* За замовчуванням приховуємо модальне вікно */
   position: fixed;
-  z-index: 1;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.modal.open {
+  display: flex; /* Показуємо модальне вікно тільки якщо клас open додано */
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.auth-tabs button {
+  margin: 5px;
+}
+
+.auth-tabs .active {
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 .cabinet { 
   cursor: pointer;
   border: solid 3px violet;
   background-color: lightpink;
+  z-index: 1001;
 }
 
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  position: relative;
-  width: 400px;
-}
-
-.close-button {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-.auth-tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
-}
-
-.auth-tabs button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  padding: 10px 20px;
-}
-
-.auth-tabs .active {
-  border-bottom: 2px solid #000;
-}
 
 
 .popup {
-  position: fixed;
+  position: absolute;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #4CAF50;
-  color: white;
+  color: blue;
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
